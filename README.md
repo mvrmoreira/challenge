@@ -12,4 +12,5 @@ Open the controller api/restaurants_controller.rb and ask the following question
 
 * Why this controller will not perform well? What's wrong with that implementation?
 
-* Improve the controller logic (you can change any files on the project) but ensure the test still working
+* Improve the controller logic and code quality (you can change any files on the project).
+Ensure the test still working!
