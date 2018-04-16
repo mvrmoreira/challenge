@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  week_day: 1
+  seats: 1
+
+two:
+  week_day: 1
+  seats: 1
