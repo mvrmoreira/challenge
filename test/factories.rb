@@ -3,6 +3,9 @@ FactoryBot.define do
     name "Eben Ezer"
   end
 
+  factory :inventory do
+  end
+
   factory :culinary do
     name "Italiana"
 

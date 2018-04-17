@@ -13,9 +13,15 @@ class Api::RestaurantsControllerTest < ActionDispatch::IntegrationTest
   test "filter restaurants for available for reservation today" do
     # hoje esse restaurante aceita no maximo 10 pessoas
     # porem já exite 3 reservas de 2 pessoas criadas cada
-    restaurant = Restaurant.first
     now = DateTime.now
-    3.times{ create(:reservation, restaurant: restaurant, event_time: now, seats: 2) }
+
+    Restaurant.all.each do |restaurant|
+      create(:inventory, restaurant: restaurant, week_day: now.wday, seats: 10)
+    end
+
+    first_restaurant = Restaurant.first
+
+    3.times{ create(:reservation, restaurant: first_restaurant, event_time: now, seats: 2) }
 
     get "/api/restaurants", params: { date: now, seats: 2 }
     assert_response :success
@@ -33,9 +39,17 @@ class Api::RestaurantsControllerTest < ActionDispatch::IntegrationTest
   test "filter restaurants for available for reservation tomorow" do
     # amanhã esse restaurante aceita no maximo 4 pessoas
     # porem já exite uma reservas de 2 pessoas criadas cada
-    restaurant = Restaurant.first
+    
     tomorrow =  DateTime.tomorrow
-    create(:reservation, restaurant: restaurant, event_time: tomorrow, seats: 2)
+
+    first_restaurant = Restaurant.first
+
+    create(:inventory, restaurant: first_restaurant, week_day: tomorrow.wday, seats: 4)
+    create(:reservation, restaurant: first_restaurant, event_time: tomorrow, seats: 2)
+
+    Restaurant.all.where("id != ?", first_restaurant.id).each do |restaurant|
+      create(:inventory, restaurant: restaurant, week_day: tomorrow.wday, seats: 10)
+    end
 
     get "/api/restaurants", params: { date: tomorrow, seats: 2 }
     assert_response :success
